@@ -14,7 +14,7 @@ Please note, that whilst we have tried our upmost to optimise the chosen framewo
 
 ### Neo4J and SQLGraph Specs
 
-As Neo4j community edition and sqlgraph are fundamentally single machine frameworks, we chose to use a server which could all but exclude the idea that hardware was the root cause of slow benchmarks. For this reason, both frameworks were ran under the same test environment, namely the [HP Proliant DL 980 G7][6]. This server was further altered to add an additional 2TB of Ram and CPU Cores. This was important for neo4j as it functions as an inmemory framework to improve query execution times. 
+As Neo4j community edition and sqlgraph are fundamentally single machine frameworks, we chose to use a server which could all but exclude the idea that hardware was the root cause of slow benchmarks. For this reason, both frameworks were ran under the same test environment, namely the [HP Proliant DL 980 G7][6]. This server was further altered to add an additional 2TB of Ram and CPU Cores. This was important for neo4j as it functions as an in memory framework to improve query execution times. 
 
 ```
 8 x Intel(R) Xeon(R) CPU 4870 E7 (10 real cores each @ 2.40 GHz)
