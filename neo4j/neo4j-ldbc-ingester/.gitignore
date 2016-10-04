@@ -1,0 +1,3 @@
+.idea
+neo4j-ldbc-ingestor.iml
+ingestion.cypher
