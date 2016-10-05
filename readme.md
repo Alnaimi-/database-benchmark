@@ -65,6 +65,8 @@ We chose to use the following data sizes when performing the benchmarks:
 
 This was to allow us to see how the different benchmarks varied over a range of sizes. Note: Whilst some may not consider 100GB to be "big data" we felt that this showed enough variety in size to get the conversation going, but would be very interested if someone continued this with 1TB+.
 
+For a quick start without messing around with the LDBC gen, the 1GB data is available in an ingested form [here][7] and a raw form [here][8] 
+
 ###Chosen queries
 Out of the possible 14 LDBC queries found within the pdf, we chose to focus on 2,6,8,9 and 11. This is because several utilised cypher functions (a feature available within only neo4j) and were therefore not possible to implement in sqlgraph or vertica without substantial work. To make this slightly more interesting we also chose to look at how the frameworks dealt with graph traversals by increasing the number of hops in query 9 from 1 through to 5.
 
@@ -125,6 +127,7 @@ It is also important to note that whilst SQLGraph seems to normally fit in-betwe
 
 ####Query 9, 5 hops
 ![alt text](results/images/query9-5.png "Query 9-5 Results")
+Note: The large jump in time between 30GB and 100GB for the Vertica cluster can be attributed to data spilling to disk during the traversal. We do not believe this would be the case on a larger cluster where more memory would be available.
 
 ####Query 11
 ![alt text](results/images/query11.png "Query 11 Results")
@@ -135,4 +138,6 @@ It is also important to note that whilst SQLGraph seems to normally fit in-betwe
 [4]:https://my.vertica.com/docs/7.2.x/HTML/
 [5]:http://dag.wiee.rs/home-made/dstat/
 [6]:https://www.hpe.com/h20195/v2/getpdf.aspx/c04128191.pdf?ver=43
+[7]:https://drive.google.com/file/d/0B0uip08Km2LPc0d0M0JBYmdKWms/view?usp=sharing 
+[8]:https://drive.google.com/file/d/0B0uip08Km2LPUTAyaUgyV2VybVk/view?usp=sharing
 
