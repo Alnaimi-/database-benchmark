@@ -11,6 +11,7 @@
 #     2016/09/26 : Alnaimi : Reformat structure and execution flow
 #     2016/09/27 : Alnaimi : Rehauled user interface, standarised
 #                            code & fixed naming/style convention
+#     2016/10/10 : Alnaimi : Corrected directory path error 
 #
 #  DESCRIPTION
 #     A textual ui to help automate several utilities around Neo4J
@@ -67,9 +68,6 @@ chooseData() {
 
 ingestData() {
   while true; do
-    chooseData
-    DATA_PATH="$LDBC_HOME/$CHOSEN_SET/social_network"
-
     clear && read -p "## Ingesting Data
      Usage:
       1, To use LOAD_CSV.
@@ -80,22 +78,27 @@ ingestData() {
 
     Enter option: "
 
-    case $REPLY in
-      "1") echo "Using LOAD_CSV"; (cd neo4j-ldbc-ingester && ./populate_neo4j.sh 
-        --ldbc $DATA_PATH --db $NEO4J_HOME/data/graph.db) ;;
-      "2") echo "Using bulk ingester"; 
-           echo "Do you wish to change headers to fit bulk syntax (only needs to be done once) [y/n]"
-           read response
+    ccase $REPLY in
+      "1") echo "Using LOAD_CSV"; 
+           chooseData && DATA_PATH="$LDBC_HOME/$CHOSEN_SET/social_network";
+
+           (cd neo4j-ldbc-ingester && ./populate_neo4j.sh --ldbc $DATA_PATH --db $NEO4J_HOME/data/graph.db) 
+           ;;
+      "2") echo "Using bulk ingester";
+           chooseData && DATA_PATH="$LDBC_HOME/$CHOSEN_SET/social_network_ingest";
+
+           read -p "Do you wish to change headers to fit bulk syntax (only needs to be done once) [y/n]: "
           
            case $REPLY in 
-            [yY][eE][sS]|[yY]) (cd neo4j-ldbc-ingester && ./populate_neo4j.sh 
-              --ldbc $DATA_PATH --db $NEO4J_HOME/data/graph.db -b -i) ;;
-            *) (cd neo4j-ldbc-ingester && ./populate_neo4j.sh 
-              --ldbc $DATA_PATH --db $NEO4J_HOME/data/graph.db -b) ;;
+            [yY][eE][sS]|[yY]) (cd neo4j-ldbc-ingester && ./populate_neo4j.sh --ldbc $DATA_PATH --db $NEO4J_HOME/data/graph.db -b -i) ;;
+            *) (cd neo4j-ldbc-ingester && ./populate_neo4j.sh --ldbc $DATA_PATH --db $NEO4J_HOME/data/graph.db -b) ;;
            esac
            ;;
-      "3") echo "Using split ingester"; (cd neo4j-ldbc-ingester && ./populate_neo4j.sh   
-            --ldbc $DATA_PATH --db $NEO4J_HOME/data/graph.db -s) ;;
+      "3") echo "Using split ingester"; 
+           chooseData && DATA_PATH="$LDBC_HOME/$CHOSEN_SET/social_network";
+
+           (cd neo4j-ldbc-ingester && ./populate_neo4j.sh --ldbc $DATA_PATH --db $NEO4J_HOME/data/graph.db -s) 
+           ;;
       "m") echo "Returning to main menu"; break ;;
       "x") safeExit ;;
       *)   echo "Please select a valid option!" ;;
