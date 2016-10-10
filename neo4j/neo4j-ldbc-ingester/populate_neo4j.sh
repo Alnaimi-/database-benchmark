@@ -35,6 +35,7 @@
 #================================================================
 #  HISTORY
 #     2016/05/11 : Alhamza Alnaimi : Script creation
+#     2016/10/10 : Alhamza Alnaimi : Aligned UI with rest of sys
 #
 #================================================================
 # END_OF_HEADER
@@ -191,10 +192,9 @@ fi
 echo "Populating NEO4J LDBC database"
 
 if [[ -d $DATABASE_NAME ]]; then
-    echo "  - Database already exists. Would you like to overwrite it?  [y/N] "
-    read response
+    read -p "  - Database already exists. Would you like to overwrite it?  [y/N]: "
 
-    case $response in
+    case $REPLY in
     [yY][eE][sS]|[yY])
         rm -r -f $DATABASE_NAME
         echo "  - Clean up done"
@@ -231,10 +231,9 @@ splitIngester() {
 #if split data chosen, check if previous split data exists and if user wants to overwrite it
 if $SPLIT_DATA; then
     if [[ -d $LDBC_PATH/0 ]]; then
-        echo "  There is previous split data, do you wish to overwrite?  [y/N] "
-        read response
+        read -p "  There is previous split data, do you wish to overwrite?  [y/N]: "
 
-        case $response in [yY][eE][sS]|[yY])
+        case $REPLY in [yY][eE][sS]|[yY])
             echo "Splitting data"
             python $DATA_SPLITTER $ABS_LDBC_PATH
             ./change_headers.sh $LDBC_PATH/0
