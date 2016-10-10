@@ -187,7 +187,7 @@ function safeExit() {
 
 clear && echo $'\n'"# Checking for package dependencies..."$'\n'
 
-# Make sure that both Python3 and MySQL > 5.7 installed
+# Make sure that Python is installed
 if ! $(type "python" &> /dev/null); then
   die "This script requires the Python runtime to be installed!";
 fi
