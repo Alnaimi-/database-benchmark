@@ -171,10 +171,9 @@ def mergeFiles():
 
 # Main flow:
 
-# Only two argument is accepted - path to ldbc and target (vertica / cypher)
-if (sys.argv >= 2):
+# Only one argument is accepted
+if (sys.argv >= 1):
     ldbcPath = sys.argv[1];
-    target = sys.argv[3];
 else:
     print ("[ERROR] Wrong usage. Is it being run through the script?")
     exit(1)
@@ -206,9 +205,4 @@ if(sys.argv > 2):
     if(sys.argv[2] == "Load_CSV"):
         # generate ingestionTemplate
         tempManager = TemplateManager()
-	if (target == 'neo4j'):
-        	tempManager.populateCypherIngestionTemplate(ldbcPath)
-	elif (target == 'vertica'):
-        	tempManager.populateSqlIngestionTemplate(ldbcPath)
-
-
+        tempManager.populateCypherIngestionTemplate(ldbcPath)
