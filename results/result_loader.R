@@ -85,8 +85,8 @@ load_qtimes <- function() {
 # The fastest available method was utilised for respective framework
 migr_times <- function(df) {
   gg <- ggplot(df, aes(x = factor(size), y = time, color = database)) +
-    geom_point(size = 1.5, alpha = 0.8) + # set point size and transparency
-    facet_wrap(~database) + 
+    geom_point(size = 1.5, alpha = 1) + # set point size and transparency
+    # facet_wrap(~database) + 
     scale_x_discrete(limits=paste(dataset, "B", sep = '')) + # reorder by size discrete
     ggtitle("Database migration time") +
     ylab("\nMigration time in sec") + xlab("LDBC dataset size")
@@ -99,8 +99,8 @@ migr_times <- function(df) {
 # The fastest available method was utilised for respective framework
 data_size <- function(df) {
   gg <- ggplot(df, aes(x = factor(size), y = store, color = database)) +
-    geom_point(size = 1.5, alpha = 0.8) + # set point size and transparency
-    facet_wrap(~database) + 
+    geom_point(size = 1.5, alpha = 1) + # set point size and transparency
+    # facet_wrap(~database) + 
     scale_x_discrete(limits=paste(dataset, "B", sep = '')) + # reorder by size discrete
     ggtitle("Stored databse size") +
     ylab("\nDatabase size in GB") + xlab("LDBC dataset size")
@@ -122,11 +122,11 @@ exec_times <- function(df, fit) {
   } else { ylab <- "msec" }
   
   gg <- ggplot(df, aes(x=size, y=time, color=tun)) +
-    geom_point(size = 1.5, alpha = 0.8) + # set point size and transparency
+    geom_point(size = 1.5, alpha = 1) + # set point size and transparency
     facet_wrap(~database) +
     ggtitle("Query execution times") +
     ylab(paste("Execution time in ", ylab, sep='')) + xlab("Dataset size") +
-    scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) 
+    scale_x_continuous(breaks = scales::pretty_breaks(n = 10))
   
   if(fit != 1) {
     gg <- gg +
