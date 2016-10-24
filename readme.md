@@ -30,7 +30,7 @@ Running Ubuntu 14.04 LTS With Neo4J 2.3.4 Community edition, java-1.7.0-openjdk 
 
 ###### System Tuning
 
-While the majority of changes were performed around the individual frameworks, see [Neo4J benchmark][8] for query tunning, and [SQLGraph benchmark][9] for migration tunning. An additional change was made to the io scheduling, namely from deadline to noop. This was mainly done in favour for Neo4J.
+While the majority of changes were performed around the individual frameworks, see Neo4J benchmark for query tunning, and SQLGraph benchmark for migration tunning. An additional change was made to the io scheduling, namely from deadline to noop. This was mainly done in favour for Neo4J.
 
 ### Vertica Specs
 
@@ -65,7 +65,7 @@ We chose to use the following data sizes when performing the benchmarks:
 
 This was to allow us to see how the different benchmarks varied over a range of sizes. Note: Whilst some may not consider 100GB to be "big data" we felt that this showed enough variety in size to get the conversation going, but would be very interested if someone continued this with 1TB+.
 
-For a quick start without messing around with the LDBC gen, the 1GB data is available in an ingested form [here][7] and a raw form [here][8] 
+For a quick start without messing around with the LDBC gen, the 1GB data is available in a raw form [here][8] and two ingested forms [neo4j 2.3.4][9]  (the version used in this benchmark) and [neo4j 3.0.6][7] 
 
 ###Chosen queries
 Out of the possible 14 LDBC queries found within the pdf, we chose to focus on 2,6,8,9 and 11. This is because several utilised cypher functions (a feature available within only neo4j) and were therefore not possible to implement in sqlgraph or vertica without substantial work. To make this slightly more interesting we also chose to look at how the frameworks dealt with graph traversals by increasing the number of hops in query 9 from 1 through to 5.
@@ -140,4 +140,4 @@ Note: The large jump in time between 30GB and 100GB for the Vertica cluster can 
 [6]:https://www.hpe.com/h20195/v2/getpdf.aspx/c04128191.pdf?ver=43
 [7]:https://drive.google.com/file/d/0B0uip08Km2LPc0d0M0JBYmdKWms/view?usp=sharing 
 [8]:https://drive.google.com/file/d/0B0uip08Km2LPUTAyaUgyV2VybVk/view?usp=sharing
-
+[9]:https://drive.google.com/file/d/0B0uip08Km2LPRmN1SXRELXM3blk/view?usp=sharing
