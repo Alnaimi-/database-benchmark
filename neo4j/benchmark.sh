@@ -78,7 +78,7 @@ ingestData() {
 
     Enter option: "
 
-    ccase $REPLY in
+    case $REPLY in
       "1") echo "Using LOAD_CSV"; 
            chooseData && DATA_PATH="$LDBC_HOME/$CHOSEN_SET/social_network";
 
