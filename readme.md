@@ -1,4 +1,4 @@
-#Graph Query Engine Benchmark
+# Graph Query Engine Benchmark
 The purpose of this project is to compare the ability of varying graph frameworks in a reproducible manner. We hope that this in turn will churn up interesting discussion about improvements that need be addressed at both the individual and overall level. 
 
 To do this we chose the LDBC-SNB Data Generator [(read more here)][1] to create realistic social network graphs, and as a standard query base. We have also elected to use standardised hardware, the details of which can be found in the Hardware section below. 
@@ -7,7 +7,7 @@ For our initial tests we have chosen to compare [Neo4J][2], [SQLgraph][3] and [V
 
 We have also created an R script which processes the raw data and allows the results to be viewed in a Web UI. This can be found in the Results folder above, and was used to generate the graphs seen in the results section below. 
 
-###Disclaimer
+### Disclaimer
 Please note, that whilst we have tried our upmost to optimise the chosen frameworks to get the best result, we do not claim to be experts in their use. There could be several alterations we have overlooked that improve processing capabilities in any number of ways. This is first and foremost a community project and we hope that anyone who notices a flaw in this work will be able to help point us in the right direction or get involved themselves. 
 
 ## Hardware specifications
@@ -54,12 +54,12 @@ It's worth noting that above mentioned specs are considerably inferior in every 
 
 Only one change was made for the tuning of the cluster which was to disable CPU frequency scaling on every single host and enable hyper threading. The same configuration were performed on the server running Neo4j and sqlgraph.
 
-##Benchmark Details
+## Benchmark Details
 There are two main areas of focus for this project. The first is how fast the framework is able to ingest a given dataset (from raw csv to queryable db) and the size variation this causes (is the frameworks db smaller or larger than the raw data).
 
 The second is how long it takes for the frameworks to run the chosen queries on each of the datasizes. Note we also use a modified version of [dstat][5] to monitor CPU/MEM/IO etc. but this is only for helping with optimisations and was disabled during the overall benchmark, used in the published version.
 
-###Data sizes
+### Data sizes
 We chose to use the following data sizes when performing the benchmarks:
 ```1GB, 3GB, 10GB, 30GB, 100GB```
 
@@ -67,27 +67,27 @@ This was to allow us to see how the different benchmarks varied over a range of 
 
 For a quick start without messing around with the LDBC gen, the 1GB data is available in a raw form [here][8] and two ingested forms [neo4j 2.3.4][9]  (the version used in this benchmark) and [neo4j 3.0.6][7] 
 
-###Chosen queries
+### Chosen queries
 Out of the possible 14 LDBC queries found within the pdf, we chose to focus on 2,6,8,9 and 11. This is because several utilised cypher functions (a feature available within only neo4j) and were therefore not possible to implement in sqlgraph or vertica without substantial work. To make this slightly more interesting we also chose to look at how the frameworks dealt with graph traversals by increasing the number of hops in query 9 from 1 through to 5.
 
-####Query 2 Recent Posts and Comments by your Friends
+#### Query 2 Recent Posts and Comments by your Friends
 Given a start Person, find (most recent) Posts and Comments from all of that Person’s friends, that were created before (and including) a given date. Return the top 20 Posts/Comments, and the Person that created each of them. Sort results descending by creation date, and then ascending by Post identifier.
 
-####Query 6: Tag Co-occurrance 
+#### Query 6: Tag Co-occurrance 
 Given a start Person and some Tag, find the other Tags that occur together with this Tag on Posts that were created by start Person’s friends and friends of friends (excluding start Person). Return top 10 Tags, and the count of Posts that were created by these Persons, which contain both this Tag and the given Tag. Sort results descending by count, and then ascending by Tag name.
 
-####Query 8: Recent Replies
+#### Query 8: Recent Replies
 Given a start Person, find (most recent) Comments that are replies to Posts/Comments of the start Person. Only consider immediate (1-hop) replies, not the transitive (multi-hop) case. Return the top 20 reply Comments, and the Person that created each reply Comment. Sort results descending by creation date of reply Comment, and then ascending by identifier of reply Comment.
 
-####Query 9: Recent posts and comments by friends and friends of friends
+#### Query 9: Recent posts and comments by friends and friends of friends
 Given a start Person, find the (most recent) Posts/Comments created by that Person’s friends or friends of friends  (excluding start Person). Only consider the Posts/Comments created before a given date (excluding that date). Return the top 20 Posts/Comments, and the Person that created each of those Posts/Comments. Sort results descending by creation date of Post/Comment, and then ascending by Post/Comment identifier.
 
-####Query 11: Job referral
+#### Query 11: Job referral
 Given a start Person, find that Person’s friends and friends of friends (excluding start Person) who started Working in some Company in a given Country, before a given date (year). Return top 10 Persons, the Company they worked at, and the year they started working at that Company. Sort results ascending by the start date, then ascending by Person identifier, and lastly by Organization name descending.
 
-##Results
+## Results
 
-###Data migration
+### Data migration
 
 #### Stored database size
 
@@ -101,7 +101,7 @@ Contrary to the above, Vertica's column-oriented automatic compression runs in b
 
 Finally, SQLGraph has a massive increase in size, up to a factor of 5. This is because of the duplication of information stored in the primary and secondary adjacency tables but also the increase of data store attributed to by the JSON columns. 
 
-####Database migration time
+#### Database migration time
 
 ![alt text](results/images/migration_time.png "Database Migration Time")
 
@@ -113,23 +113,23 @@ Surprisingly, the Vertica framework took less than both Neo4J and sqlgraph whils
 
 Finally, the mysql 'load csv in file' operation was the slowest of the three. Whilst attempts were made to improve the ingestion time (this includes both innodb and environment tuning), the migration was still order of magnitude higher than that of Neo4J or Vertica.
 
-###Query executions
+### Query executions
 
 Below is an extract of the results showing the execution time across a variety of queries. Whilst no one framework preformed better than the rest across the board, we were most suprised at the time taken by Neo4J when preforming graph traversals (see query 9 and 11). In fact query 9 would often timeout ( > 6 hours) when executed with a depth of 4+ (illustrated by the complete absence of neo4j from  Query 9, 5 hops). Vertica, however, performed these traversals in a much shorter time. This is interesting as we assumed a framework specifically for graph processing would handle traversals better than a more general RDBMS. 
 
 It is also important to note that whilst SQLGraph seems to normally fit in-between neo4j and vertica, this was run without any tuning made to the innoDB nor the server environment (see SQL directory for more details). 
 
-####Query 6
+#### Query 6
 ![alt text](results/images/query6.png "Query 6 Results")
 
-####Query 9, 2 hops
+#### Query 9, 2 hops
 ![alt text](results/images/query9-2.png "Query 9-2 Results")
 
-####Query 9, 5 hops
+#### Query 9, 5 hops
 ![alt text](results/images/query9-5.png "Query 9-5 Results")
 Note: The large jump in time between 30GB and 100GB for the Vertica cluster can be attributed to data spilling to disk during the traversal. We do not believe this would be the case on a larger cluster where more memory would be available.
 
-####Query 11
+#### Query 11
 ![alt text](results/images/query11.png "Query 11 Results")
 
 [1]:https://github.com/ldbc/ldbc_snb_docs/blob/master/LDBC_SNB_v0.2.2.pdf
